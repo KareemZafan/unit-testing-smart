@@ -33,7 +33,7 @@ public class MyStackTests {
     @Test
     void testPopItemsFromStack() {
 
-        assertNull(myStack);
+        assertNotNull(myStack);
         assertTrue(myStack.isEmpty());
 
         var ex = assertThrowsExactly(IllegalStateException.class, () -> myStack.pop());
