@@ -2,6 +2,12 @@ package org.iti.app_tests;
 
 import org.iti.app.Calculator;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
@@ -30,38 +36,22 @@ public class CalculatorTests {
         System.out.println("After all test methods");
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Feature-123 Addition Functionality")
     @Tag("FEB-RELEASE")
-    void testAddition() {
-
+    @CsvFileSource(resources = "/testData.csv", numLinesToSkip = 1)
+    void testAddition(String input1, String input2, String sum) {
         System.out.println("Addition TestCase");
-        // Arrange
-
-        // Act
-
-        double result = calc.add(2000, 500);
-
-        // Assert
-
-        assertEquals(2500, result, "Summation is not correct");
-        assertEquals(-52000, calc.add(-2000, -50000));
-        assertEquals(-50000, calc.add(0, -50000));
-        assertEquals(-2000, calc.add(-2000, 0));
+        assertEquals(Double.parseDouble(sum), calc.add(Double.parseDouble(input1), Double.parseDouble(input2)));
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Feature-123 Subtraction Functionality")
-    void testSubtraction() {
-
+    @MethodSource(value = "provideTestDataForSubtraction")
+    void testSubtraction(double in1, double in2, double result) {
+        assertEquals(result, calc.sub(in1, in2));
         System.out.println("Subtraction TestCase");
-        // Arrange
 
-        //Act , Asserts
-        assertEquals(1500, calc.sub(2000, 500), "Subtraction is not correct");
-        assertEquals(48000, calc.sub(-2000, -50000));
-        assertEquals(50000, calc.sub(0, -50000));
-        assertEquals(-2000, calc.sub(-2000, 0));
     }
 
     @Test
@@ -94,7 +84,6 @@ public class CalculatorTests {
 
         Exception ex = assertThrowsExactly(IllegalArgumentException.class, () -> calc.div(5, 0));
         assertEquals("Dividing by Zero!", ex.getMessage(), "Errors messages are not the same");
-
     }
 
     @Test
@@ -125,6 +114,35 @@ public class CalculatorTests {
         assertEquals(0, calc.abs(0));
 
     }
+
+    @ParameterizedTest
+    @MethodSource(value = "provideTestData")
+    void testPositiveNumbers(double value, boolean status) {
+        System.out.println("Positive Numbers Test Case");
+        assertEquals(status, calc.isPositive(value));
+    }
+
+
+
+
+    static Stream<Arguments> provideTestData() {
+        return Stream.of(
+                Arguments.of(1, true),
+                Arguments.of(-1, false),
+                Arguments.of(-19.50, false),
+                Arguments.of(19.50, true)
+        );
+    }
+
+    static Stream<Arguments> provideTestDataForSubtraction() {
+        return Stream.of(
+                Arguments.of(2000, 500, 1500),
+                Arguments.of(-2000, -50000, 48000),
+                Arguments.of(0, -50000, 50000),
+                Arguments.of(-2000, 0, -2000)
+        );
+    }
+
 
 
 }

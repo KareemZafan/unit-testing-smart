@@ -98,13 +98,12 @@ public class Calculator2Tests {
 
         Exception ex = assertThrowsExactly(IllegalArgumentException.class, () -> calc.div(5, 0));
         assertEquals("Dividing by Zero!", ex.getMessage(), "Errors messages are not the same");
-
     }
 
     @Test
     @DisplayName("Feature-123 Square Root Functionality")
     @Tag("FEB-RELEASE")
-    @EnabledForJreRange(min = JRE.JAVA_12, max = JRE.JAVA_17)
+    //@EnabledForJreRange(min = JRE.JAVA_12, max = JRE.JAVA_17)
     void testSquareRoot() {
 
         System.out.println("Square Root TestCase");
@@ -119,7 +118,7 @@ public class Calculator2Tests {
 
     @Test
     @DisplayName("Feature-123 Absolute Values Functionality")
-    @EnabledOnOs(OS.MAC)
+    //@EnabledOnOs(OS.MAC)
     void testAbsoluteValues() {
 
         System.out.println("bsolute Values TestCase");

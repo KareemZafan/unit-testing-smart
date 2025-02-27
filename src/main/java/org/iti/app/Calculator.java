@@ -29,4 +29,8 @@ public class Calculator {
     public long abs(long a) {
         return Math.abs(a);
     }
+
+    public boolean isPositive(double value) {
+        return value > 0;
+    }
 }
